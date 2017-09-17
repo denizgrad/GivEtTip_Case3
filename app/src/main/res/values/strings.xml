@@ -16,4 +16,9 @@
     <string name="repeat_password">Re-Enter Password*</string>
     <string name="email">E-Mail*</string>
     <string name="done">Done</string>
+
+    <!-- User Activity -->
+    <string name="account">Account</string>
+    <string name="map">Map</string>
+    <string name="scores">Scores</string>
 </resources>

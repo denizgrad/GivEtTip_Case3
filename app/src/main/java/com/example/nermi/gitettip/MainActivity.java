@@ -1,6 +1,8 @@
 package com.example.nermi.gitettip;
 
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -32,7 +34,7 @@ public class MainActivity extends AppCompatActivity {
         else if(TextUtils.isEmpty(password.getText().toString()))
             password.setError("Please enter your password");
         else{
-            Intent intent = new Intent(this, NewUserActivity.class);
+            Intent intent = new Intent(this, UserActivity.class);
             startActivity(intent);
         }
     }
