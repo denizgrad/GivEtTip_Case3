@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "522703474723",
+    "firebase_url": "https://gitettip.firebaseio.com",
+    "project_id": "gitettip",
+    "storage_bucket": "gitettip.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:522703474723:android:2ccb60c3ac21a78e",
+        "android_client_info": {
+          "package_name": "com.example.nermi.gitettip"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "522703474723-bb91fp65cpn6ca0ffdsp60minp2irjtv.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDt18sCEM8J77Te0rfy_oQlyY7ZThryg88"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
