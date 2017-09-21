@@ -6,6 +6,8 @@ package utilities;
 
 public class AppConstants {
     public static String API_URL = "https://getjavaapi.eu-de.mybluemix.net/main/";
-    public static final String API_USERNAME = "getettip";
-    public static final String API_PASSWORD = "getettip";
+//    public static String API_URL = "http://localhost:8080/cloud/main/login/";
+    public static final String API_USERNAME = "giveettip";
+    public static final String API_PASSWORD = "giveettip";
+    public static final String API_CREDENTIALS = API_USERNAME + ":" + API_PASSWORD;
 }

@@ -35,12 +35,17 @@ public class ApiLogin extends AsyncTask<User, Void, Boolean> {
     protected Boolean doInBackground(User... params) {
         User u = params[0];
         try {
-            URL url = new URL(AppConstants.API_URL + "users/");
-            String credentials = AppConstants.API_USERNAME + ":" + AppConstants.API_PASSWORD;
+            URL url = new URL(AppConstants.API_URL + "login");
+
+            byte[] data = AppConstants.API_CREDENTIALS.getBytes("UTF-8");
+            String base64 = Base64.encodeToString(data, Base64.DEFAULT);
+            String encodedCredentials = "Basic " + base64;
+
             HttpURLConnection conn = (HttpURLConnection) url.openConnection();
             conn.setRequestMethod("POST");
             conn.setRequestProperty("Content-Type", "application/json; charset=UTF-8");
-            conn.setRequestProperty("Authorization", "Basic " + Base64.encode(credentials.getBytes(), Base64.NO_WRAP));
+            conn.setRequestProperty("Authorization", encodedCredentials);
+//            conn.setRequestProperty("Authorization", "Basic " + credentials);
             conn.setRequestProperty("Accept", "application/json");
             conn.setDoOutput(true);
             conn.setDoInput(true);
