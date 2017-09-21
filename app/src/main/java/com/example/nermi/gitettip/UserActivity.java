@@ -86,4 +86,5 @@ public class UserActivity extends AppCompatActivity {
             startActivityForResult(intent, CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE);
 
     }
+
 }
