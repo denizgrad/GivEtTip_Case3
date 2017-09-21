@@ -33,7 +33,7 @@ public class ApiLogin extends AsyncTask<User, Void, Boolean> {
             String json = gson.toJson(u);
             Log.i("JSON", json);
 
-            Response response = ApiUtility.prepareConnection("login", "POST", json);
+            Response response = ApiUtility.getResponse("login", "POST", json);
             if (response.getStatusCode() == 200) {
                 int userId = Integer.parseInt(response.getReturnKey());
                 SharedPreferencesUtility.saveValue(activity, "userId", userId);

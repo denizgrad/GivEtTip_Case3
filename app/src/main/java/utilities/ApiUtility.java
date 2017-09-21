@@ -21,7 +21,7 @@ import models.Response;
 
 public class ApiUtility {
 
-    public static Response prepareConnection(String urlEnding, String httpMethod, String json) {
+    private static HttpURLConnection prepareConnection(String urlEnding, String httpMethod, String json) {
         try {
             URL url = new URL(AppConstants.API_URL + urlEnding);
 
@@ -48,9 +48,17 @@ public class ApiUtility {
 //            Log.i("STATUS", String.valueOf(responseCode));
 //            Log.i("MSG", responseMessage);
 
-            // Create an Response object
+            return conn;
+        } catch (Exception e) {
+            e.printStackTrace();
+            Log.i("error", e.toString());
+            return null;
+        }
+    }
+
+    private static String getInputStream(HttpURLConnection conn) {
+        try {
             StringBuilder result = new StringBuilder();
-//            if (conn.getResponseCode() == HttpURLConnection.HTTP_OK) {
             InputStream in = new BufferedInputStream(conn.getInputStream());
             BufferedReader reader = new BufferedReader(new InputStreamReader(in));
 
@@ -58,10 +66,20 @@ public class ApiUtility {
             while ((line = reader.readLine()) != null) {
                 result.append(line);
             }
-            Gson gson = new Gson();
-            Response response = gson.fromJson(String.valueOf(result), Response.class);
-//            }
+            return String.valueOf(result);
+        } catch (Exception e) {
+            e.printStackTrace();
+            Log.i("error", e.toString());
+            return null;
+        }
+    }
 
+    public static Response getResponse(String urlEnding, String httpMethod, String json) {
+        try {
+            HttpURLConnection conn = prepareConnection(urlEnding, httpMethod, json);
+            String stream = getInputStream(conn);
+            Gson gson = new Gson();
+            Response response = gson.fromJson(String.valueOf(stream), Response.class);
             conn.disconnect();
             return response;
         } catch (Exception e) {
