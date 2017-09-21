@@ -1,5 +1,6 @@
 package com.example.nermi.gitettip;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -36,13 +37,13 @@ public class MainActivity extends AppCompatActivity {
             password.setError("Please enter your password.");
         else{
             User u = new User(username.getText().toString(), password.getText().toString());
-            boolean authorized = ApiLogin.checkCredentials(u);
-            if (authorized) {
-                Intent intent = new Intent(this, UserActivity.class);
-                startActivity(intent);
-            } else {
-                username.setError("The login credentials are not correct.");
-            }
+            new ApiLogin(this).execute(u);
+//            if (authorized) {
+//                Intent intent = new Intent(this, UserActivity.class);
+//                startActivity(intent);
+//            } else {
+//                username.setError("The login credentials are not correct.");
+//            }
         }
     }
 }
