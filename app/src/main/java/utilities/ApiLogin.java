@@ -1,22 +1,25 @@
 package utilities;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
-import android.support.v4.content.ContextCompat;
 import android.util.Base64;
 import android.util.Log;
 import android.widget.Toast;
 
-import com.example.nermi.gitettip.MainActivity;
 import com.example.nermi.gitettip.UserActivity;
 import com.google.gson.Gson;
 
+import java.io.BufferedInputStream;
+import java.io.BufferedReader;
 import java.io.DataOutputStream;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.nio.charset.StandardCharsets;
 
+import models.Response;
 import models.User;
 
 /**
@@ -45,10 +48,10 @@ public class ApiLogin extends AsyncTask<User, Void, Boolean> {
             conn.setRequestMethod("POST");
             conn.setRequestProperty("Content-Type", "application/json; charset=UTF-8");
             conn.setRequestProperty("Authorization", encodedCredentials);
-//            conn.setRequestProperty("Authorization", "Basic " + credentials);
             conn.setRequestProperty("Accept", "application/json");
             conn.setDoOutput(true);
             conn.setDoInput(true);
+
             Gson gson = new Gson();
             String json = gson.toJson(u);
 
@@ -63,9 +66,26 @@ public class ApiLogin extends AsyncTask<User, Void, Boolean> {
             String responseMessage = conn.getResponseMessage();
             Log.i("STATUS", String.valueOf(responseCode));
             Log.i("MSG", responseMessage);
+
+            StringBuilder result = new StringBuilder();
+            if (conn.getResponseCode() == HttpURLConnection.HTTP_OK) {
+                InputStream in = new BufferedInputStream(conn.getInputStream());
+                BufferedReader reader = new BufferedReader(new InputStreamReader(in));
+
+                String line;
+                while ((line = reader.readLine()) != null) {
+                    result.append(line);
+                }
+            }
+            Response response = gson.fromJson(String.valueOf(result), Response.class);
             conn.disconnect();
 
-            if (responseCode == 200) return true; else return false;
+            if (responseCode == 200) {
+                int userId = Integer.parseInt(response.getReturnKey());
+                SharedPreferencesUtility.saveValue(activity, "userId", userId);
+                return true;
+            } else
+                return false;
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -77,8 +97,9 @@ public class ApiLogin extends AsyncTask<User, Void, Boolean> {
     @Override
     protected void onPostExecute(Boolean authorized) {
         super.onPostExecute(authorized);
-        if(authorized) {
-            Toast.makeText(activity, "Successful login!", Toast.LENGTH_LONG).show();
+        if (authorized) {
+            int userId = SharedPreferencesUtility.readValue(activity, "userId");
+            Toast.makeText(activity, "Successful login! ID: " + Integer.toString(userId), Toast.LENGTH_LONG).show();
             activity.startActivity(new Intent(activity, UserActivity.class));
         } else {
             Toast.makeText(activity, "The login credentials are not correct.", Toast.LENGTH_LONG).show();
