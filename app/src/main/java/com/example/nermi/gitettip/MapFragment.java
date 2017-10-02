@@ -3,8 +3,12 @@ package com.example.nermi.gitettip;
 
 import android.*;
 import android.Manifest;
+import android.app.Notification;
+import android.app.NotificationManager;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.pm.PackageManager;
+import android.graphics.Color;
 import android.location.Location;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -19,11 +23,15 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.google.android.gms.location.FusedLocationProviderClient;
+import com.google.android.gms.location.LocationCallback;
+import com.google.android.gms.location.LocationRequest;
+import com.google.android.gms.location.LocationResult;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.model.CircleOptions;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -38,6 +46,11 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
     private MapView mapView;
     private GoogleMap googleMap;
     private FusedLocationProviderClient fusedLocationProviderClient;
+    private LocationRequest locationRequest;
+    private LocationCallback locationCallback;
+    LatLng myLocation;
+    String loc;
+
     private static final int MY_PERMISSIONS_REQUEST_FINE_LOCATION = 123;
 
     public MapFragment() {
@@ -50,6 +63,21 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
 
         //TODO: Check if it is getContext() or getActivity()
         fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(getActivity());
+        locationRequest = new LocationRequest();
+        locationRequest.setInterval(10000);
+        locationCallback = new LocationCallback(){
+
+            @Override
+            public void onLocationResult(LocationResult locationResult) {
+                for (Location location : locationResult.getLocations()) {
+                    pinpointCurrentLocation();
+                    Log.e("LOCATION CHANGED", location.toString());
+                    loc = location.toString();
+                    testNotification();
+                }
+            };
+        };
+
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_map, container, false);
     }
@@ -67,12 +95,15 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
     public void onMapReady(GoogleMap map) {
         googleMap = map;
 
-            if(ActivityCompat.checkSelfPermission(getActivity(), android.Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED){
-                pinpointCurrentLocation();
-            }else {
-                createPermissionDialog();
-            }
+        if(ActivityCompat.checkSelfPermission(getActivity(), android.Manifest.permission.ACCESS_FINE_LOCATION)
+                == PackageManager.PERMISSION_GRANTED){
+            pinpointCurrentLocation();
+            googleMap.setMyLocationEnabled(true);
+            startLocationUpdates();
 
+        }else {
+            createPermissionDialog();
+        }
     }
 
     @Override
@@ -85,6 +116,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
                         && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
 
                     pinpointCurrentLocation();
+
 
                 } else {
 
@@ -107,9 +139,9 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
                         public void onSuccess(Location location) {
 
                             if (location != null) {
-                                LatLng myLocation = new LatLng(location.getLatitude(), location.getLongitude());
-                                googleMap.addMarker(new MarkerOptions().position(myLocation).title("SDU TEK"));
-                                googleMap.moveCamera(CameraUpdateFactory.newLatLng(myLocation));
+                                myLocation = new LatLng(location.getLatitude(), location.getLongitude());
+                                googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(myLocation, 12.0f));
+                                createUserCircle();
                             }
                         }
                     });
@@ -142,5 +174,55 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
         // 3. Get the AlertDialog from create()
         AlertDialog dialog = builder.create();
         dialog.show();
+    }
+
+    private void createUserCircle(){
+        googleMap.addCircle(new CircleOptions()
+        .center(myLocation)
+        .radius(3000)
+        .strokeColor(Color.RED)
+        .fillColor(0x220000FF));
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+    }
+
+    private void startLocationUpdates() {
+        try {
+            fusedLocationProviderClient.requestLocationUpdates(locationRequest,
+                    locationCallback,
+                    null /* Looper */);
+            Log.e("LOCATION LISTENER START", "KJGUO");
+        }catch (SecurityException e){
+            e.printStackTrace();
+        }
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        stopLocationUpdates();
+    }
+
+    private void stopLocationUpdates() {
+        fusedLocationProviderClient.removeLocationUpdates(locationCallback);
+        Log.e("LOCATION LISTENER STOP", "KJGUO");
+    }
+
+    public void testNotification(){
+        Notification notification = new Notification.Builder(getActivity())
+                .setSmallIcon(R.mipmap.ic_launcher)
+                .setContentTitle("Location Changed")
+                .setContentText(loc)
+                .setAutoCancel(true)
+                .setPriority(Notification.PRIORITY_MAX)
+                .setDefaults(Notification.DEFAULT_VIBRATE)
+                .build();
+
+        NotificationManager notificationManager =
+                (NotificationManager) getActivity().getSystemService(Context.NOTIFICATION_SERVICE);
+        notificationManager.notify(65565, notification);
     }
 }
