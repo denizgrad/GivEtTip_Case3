@@ -13,6 +13,7 @@ import android.widget.EditText;
 
 import models.User;
 import utilities.ApiLogin;
+import utilities.SharedPreferencesUtility;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -24,6 +25,12 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         checkLocationPermissions();
+
+        // Check if user is already logged in.
+//        SharedPreferencesUtility.removeValue(this, "userId");
+        int userId = SharedPreferencesUtility.readValue(this, "userId");
+        if (userId > 0)
+            this.startActivity(new Intent(this, UserActivity.class));
 
         username = (EditText) findViewById(R.id.username);
         password = (EditText) findViewById(R.id.password);
@@ -41,13 +48,7 @@ public class MainActivity extends AppCompatActivity {
             password.setError("Please enter your password.");
         else{
             User u = new User(username.getText().toString(), password.getText().toString());
-            new ApiLogin(this).execute(u);
-//            if (authorized) {
-//                Intent intent = new Intent(this, UserActivity.class);
-//                startActivity(intent);
-//            } else {
-//                username.setError("The login credentials are not correct.");
-//            }
+            new ApiLogin(this, true).execute(u);
         }
     }
 

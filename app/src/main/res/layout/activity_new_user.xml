@@ -19,10 +19,26 @@
     <EditText
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="@string/new_username"
+        android:hint="@string/new_name"
         android:layout_marginTop="10dp"
         android:inputType="textPersonName"
-        android:id="@+id/newUserName"/>
+        android:id="@+id/newName"/>
+
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="@string/new_surname"
+        android:layout_marginTop="10dp"
+        android:inputType="textPersonName"
+        android:id="@+id/newSurname"/>
+
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="@string/email"
+        android:inputType="textEmailAddress"
+        android:layout_marginTop="10dp"
+        android:id="@+id/newEmail"/>
 
     <EditText
         android:layout_width="match_parent"
@@ -40,14 +56,6 @@
         android:inputType="textPassword"
         android:id="@+id/repeatedPassword"/>
 
-    <EditText
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="@string/email"
-        android:inputType="textEmailAddress"
-        android:layout_marginTop="10dp"
-        android:id="@+id/newEmail"/>
-
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -57,5 +65,4 @@
         android:layout_marginTop="10dp"
         android:onClick="sendNewUserInfo"
         />
-
 </LinearLayout>
