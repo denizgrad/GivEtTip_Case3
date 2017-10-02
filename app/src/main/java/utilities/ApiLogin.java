@@ -63,7 +63,10 @@ public class ApiLogin extends AsyncTask<User, Void, Boolean> {
                 Toast.makeText(activity, "Successful login! ID: " + Integer.toString(userId), Toast.LENGTH_LONG).show();
             else
                 Toast.makeText(activity, "Your account was successfully created! ID: " + Integer.toString(userId), Toast.LENGTH_LONG).show();
-            activity.startActivity(new Intent(activity, UserActivity.class));
+          
+            Intent intent = new Intent(activity, UserActivity.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+            activity.startActivity(intent);
         } else {
             if (login) {
                 if (this.responseCode == 500)
