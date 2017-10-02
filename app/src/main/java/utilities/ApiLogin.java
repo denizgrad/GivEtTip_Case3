@@ -54,7 +54,9 @@ public class ApiLogin extends AsyncTask<User, Void, Boolean> {
         if (authorized) {
             int userId = SharedPreferencesUtility.readValue(activity, "userId");
             Toast.makeText(activity, "Successful login! ID: " + Integer.toString(userId), Toast.LENGTH_LONG).show();
-            activity.startActivity(new Intent(activity, UserActivity.class));
+            Intent intent = new Intent(activity, UserActivity.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+            activity.startActivity(intent);
         } else {
             Toast.makeText(activity, "The login credentials are not correct.", Toast.LENGTH_LONG).show();
         }
