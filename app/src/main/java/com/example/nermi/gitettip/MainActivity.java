@@ -29,8 +29,11 @@ public class MainActivity extends AppCompatActivity {
         // Check if user is already logged in.
 //        SharedPreferencesUtility.removeValue(this, "userId");
         int userId = SharedPreferencesUtility.readValue(this, "userId");
-        if (userId > 0)
-            this.startActivity(new Intent(this, UserActivity.class));
+        if (userId > 0) {
+            Intent intent = new Intent(this, UserActivity.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+            this.startActivity(intent);
+        }
 
         username = (EditText) findViewById(R.id.username);
         password = (EditText) findViewById(R.id.password);
