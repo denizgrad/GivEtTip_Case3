@@ -6,4 +6,5 @@
 
     <!--Our App Design -->
     <color name="colorGreenShade">#1aff1a</color>
+    <color name="circle_color">#7fa3eb</color>
 </resources>

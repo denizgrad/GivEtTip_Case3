@@ -21,4 +21,14 @@
     <string name="account">Account</string>
     <string name="map">Map</string>
     <string name="scores">Scores</string>
+    <string name="title_activity_maps">Map</string>
+
+    <!-- Map Fragment -->
+    <string name="dialog_title">No Location Permission</string>
+    <string name="dialog_message">To upload pictures with the associated location and
+        see places where other GivEtTip users have taken pictures, please grant the app to
+        access location data.
+    </string>
+    <string name="add">Add Permission</string>
+    <string name="dont_allow">Don\'t Allow</string>
 </resources>
