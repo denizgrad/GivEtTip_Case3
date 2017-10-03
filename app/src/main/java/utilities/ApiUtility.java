@@ -5,6 +5,12 @@ import android.util.Log;
 
 import com.google.gson.Gson;
 
+import org.apache.http.HttpResponse;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.methods.HttpGet;
+import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.util.EntityUtils;
+
 import java.io.BufferedInputStream;
 import java.io.BufferedReader;
 import java.io.DataOutputStream;
@@ -20,6 +26,23 @@ import models.Response;
  */
 
 public class ApiUtility {
+    public static <T> T getHttpGetResponse(String urlEnding, String parameter, Class<T> type) throws Exception{
+        HttpClient httpclient = new DefaultHttpClient();
+        HttpGet httpget= new HttpGet(AppConstants.API_URL + urlEnding + "/" + parameter);
+
+        HttpResponse response = httpclient.execute(httpget);
+
+        if(response.getStatusLine().getStatusCode()==200){
+            String server_response = EntityUtils.toString(response.getEntity());
+            Log.i("Server response", server_response );
+            Gson gson = new Gson();
+            T target = gson.fromJson(server_response, type); // deserializes json into target
+            return target;
+        } else {
+            Log.i("Server response", "Failed to get server response" );
+            return null;
+        }
+    }
 
     private static HttpURLConnection prepareConnection(String urlEnding, String httpMethod, String json) {
         try {

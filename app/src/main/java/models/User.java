@@ -1,6 +1,7 @@
 package models;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.util.List;
 
 /**
@@ -12,6 +13,7 @@ public class User extends BaseModel implements Serializable {
     private String surname;
     private String email;
     private String password;
+    private BigDecimal score;
     private boolean active;
     private List<Record> records;
 
@@ -56,5 +58,11 @@ public class User extends BaseModel implements Serializable {
     }
     public void setRecords(List<Record> records) {
         this.records = records;
+    }
+    public BigDecimal getScore() {
+        return score;
+    }
+    public void setScore(BigDecimal score) {
+        this.score = score;
     }
 }
