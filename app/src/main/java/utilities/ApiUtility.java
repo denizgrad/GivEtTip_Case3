@@ -4,18 +4,25 @@ import android.util.Base64;
 import android.util.Log;
 
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 
 import org.apache.http.HttpResponse;
+import org.apache.http.auth.AuthScope;
+import org.apache.http.auth.Credentials;
+import org.apache.http.auth.UsernamePasswordCredentials;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
+import org.apache.http.client.params.AuthPolicy;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.util.EntityUtils;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedReader;
 import java.io.DataOutputStream;
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.UnsupportedEncodingException;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
@@ -26,24 +33,6 @@ import models.Response;
  */
 
 public class ApiUtility {
-    public static <T> T getHttpGetResponse(String urlEnding, String parameter, Class<T> type) throws Exception{
-        HttpClient httpclient = new DefaultHttpClient();
-        HttpGet httpget= new HttpGet(AppConstants.API_URL + urlEnding + "/" + parameter);
-
-        HttpResponse response = httpclient.execute(httpget);
-
-        if(response.getStatusLine().getStatusCode()==200){
-            String server_response = EntityUtils.toString(response.getEntity());
-            Log.i("Server response", server_response );
-            Gson gson = new Gson();
-            T target = gson.fromJson(server_response, type); // deserializes json into target
-            return target;
-        } else {
-            Log.i("Server response", "Failed to get server response" );
-            return null;
-        }
-    }
-
     private static HttpURLConnection prepareConnection(String urlEnding, String httpMethod, String json) {
         try {
             URL url = new URL(AppConstants.API_URL + urlEnding);
@@ -54,17 +43,21 @@ public class ApiUtility {
 
             HttpURLConnection conn = (HttpURLConnection) url.openConnection();
             conn.setRequestMethod(httpMethod);
-            conn.setRequestProperty("Content-Type", "application/json; charset=UTF-8");
+            if (!httpMethod.equals("GET"))
+                conn.setRequestProperty("Content-Type", "application/json; charset=UTF-8");
             conn.setRequestProperty("Authorization", encodedCredentials);
             conn.setRequestProperty("Accept", "application/json");
-            conn.setDoOutput(true);
+            if (!httpMethod.equals("GET"))
+                conn.setDoOutput(true);
             conn.setDoInput(true);
 
-            DataOutputStream os = new DataOutputStream(conn.getOutputStream());
-            //os.writeBytes(URLEncoder.encode(jsonParam.toString(), "UTF-8"));
-            os.writeBytes(json);
-            os.flush();
-            os.close();
+            if (!httpMethod.equals("GET")) {
+                DataOutputStream os = new DataOutputStream(conn.getOutputStream());
+                //os.writeBytes(URLEncoder.encode(jsonParam.toString(), "UTF-8"));
+                os.writeBytes(json);
+                os.flush();
+                os.close();
+            }
 
 //            int responseCode = conn.getResponseCode();
 //            String responseMessage = conn.getResponseMessage();
@@ -78,6 +71,13 @@ public class ApiUtility {
             return null;
         }
     }
+    public static byte[] getEncodedCredentials() throws UnsupportedEncodingException {
+        byte[] data = AppConstants.API_CREDENTIALS.getBytes("UTF-8");
+        String base64 = Base64.encodeToString(data, Base64.DEFAULT);
+        String encodedCredentials = "Basic " + base64;
+        return data;
+    }
+
 
     private static String getInputStream(HttpURLConnection conn) {
         try {
@@ -110,5 +110,15 @@ public class ApiUtility {
             Log.i("error", e.toString());
             return null;
         }
+    }
+
+    public static <T> T getHttpGetResponse(String urlEnding, String parameter, Class<T> type) throws Exception{
+        HttpURLConnection conn = prepareConnection(urlEnding + "/" + parameter, "GET", null);
+        String stream = getInputStream(conn);
+
+        Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd HH:mm:ss.SSSZ").create();
+        T target = gson.fromJson(stream, type); // deserializes json into target
+//        conn.disconnect();
+        return target;
     }
 }

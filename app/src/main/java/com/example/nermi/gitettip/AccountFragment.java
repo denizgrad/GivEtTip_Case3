@@ -1,6 +1,7 @@
 package com.example.nermi.gitettip;
 
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -10,10 +11,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.google.gson.Gson;
-
 import models.User;
-import utilities.ApiUtility;
+import utilities.ApiGetUser;
 import utilities.SharedPreferencesUtility;
 
 
@@ -21,7 +20,6 @@ import utilities.SharedPreferencesUtility;
  * A simple {@link Fragment} subclass.
  */
 public class AccountFragment extends Fragment {
-
 
     public AccountFragment() {
         // Required empty public constructor
@@ -38,16 +36,18 @@ public class AccountFragment extends Fragment {
 
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
-//        super.onViewCreated(view, savedInstanceState);
-//        //show user info
-//        int userId = SharedPreferencesUtility.readValue(getActivity(), "userId");
-//        try {
-//            User response = ApiUtility.getHttpGetResponse("users", String.valueOf(userId), User.class);
-//            ((TextView)view.findViewById(R.id.scoreValue)).setText(response.getName());
-//            ((TextView)view.findViewById(R.id.emailValue)).setText(response.getEmail());
-//            ((TextView)view.findViewById(R.id.nameValue)).setText(response.getName());
-//        } catch (Exception e) {
-//            Log.e("ERROR: ",e.getLocalizedMessage());
-//        }
+        super.onViewCreated(view, savedInstanceState);
+        //show user info
+        int userId = SharedPreferencesUtility.readValue(getActivity(), "userId");
+        try {
+            ApiGetUser getUser = new ApiGetUser();
+            User user = getUser.execute(String.valueOf(userId)).get();
+            ((TextView)view.findViewById(R.id.scoreValue)).setText(user.getScore().toString());
+            ((TextView)view.findViewById(R.id.emailValue)).setText(user.getEmail());
+            ((TextView)view.findViewById(R.id.nameValue)).setText(user.getName());
+        } catch (Exception e) {
+            Log.e("ERROR: ",e.getLocalizedMessage());
+        }
     }
+
 }

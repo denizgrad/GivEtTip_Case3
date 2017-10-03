@@ -13,6 +13,8 @@ import android.widget.TabHost.TabSpec;
 
 import java.io.ByteArrayOutputStream;
 
+import utilities.SharedPreferencesUtility;
+
 public class UserActivity extends AppCompatActivity {
 
     private static final int CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE = 100;
@@ -50,7 +52,13 @@ public class UserActivity extends AppCompatActivity {
         tabHost.addTab(scoresTab, ScoresFragment.class, null);
         tabHost.addTab(mapTab, MapFragment.class, null);
     }
-
+    public void logOut(View view) {
+// When the button for log out is pressed, do this.
+        SharedPreferencesUtility.removeValue(this, "userId"); // log out the user
+        Intent intent = new Intent(this, MainActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);   // remove the stack with activities
+        this.startActivity(intent); // go to main activity
+    }
     //TODO: Return image in the right format (PNG or JPEG) and save under res folder
     //https://developer.android.com/training/camera/photobasics.html
     @Override
