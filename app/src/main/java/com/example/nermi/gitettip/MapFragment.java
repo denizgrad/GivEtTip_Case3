@@ -51,7 +51,6 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
     private LocationRequest locationRequest;
     private LocationCallback locationCallback;
     LatLng myLocation;
-    String loc;
 
     private static final int MY_PERMISSIONS_REQUEST_FINE_LOCATION = 123;
 
@@ -76,8 +75,8 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
                     if(mapCircle != null){
                         mapCircle.remove();
                     }
-                    pinpointCurrentLocation();
-                    loc = location.toString();
+                    //pinpointCurrentLocation();
+                    createUserCircle();
                 }
             };
         };
@@ -103,6 +102,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
                 == PackageManager.PERMISSION_GRANTED){
             pinpointCurrentLocation();
             googleMap.setMyLocationEnabled(true);
+            //googleMap.addMarker(new MarkerOptions().position(new LatLng(50,22)).title("Hello World"));
             startLocationUpdates();
 
         }else {
