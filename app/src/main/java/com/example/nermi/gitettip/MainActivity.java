@@ -27,7 +27,7 @@ public class MainActivity extends AppCompatActivity {
         checkLocationPermissions();
 
         // Check if user is already logged in.
-//        SharedPreferencesUtility.removeValue(this, "userId");
+        SharedPreferencesUtility.removeValue(this, "userId"); // log out the user
         int userId = SharedPreferencesUtility.readValue(this, "userId");
         if (userId > 0) {
             Intent intent = new Intent(this, UserActivity.class);
