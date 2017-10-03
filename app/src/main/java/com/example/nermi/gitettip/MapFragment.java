@@ -31,6 +31,7 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.model.Circle;
 import com.google.android.gms.maps.model.CircleOptions;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
@@ -45,6 +46,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
 
     private MapView mapView;
     private GoogleMap googleMap;
+    Circle mapCircle;
     private FusedLocationProviderClient fusedLocationProviderClient;
     private LocationRequest locationRequest;
     private LocationCallback locationCallback;
@@ -64,16 +66,18 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
         //TODO: Check if it is getContext() or getActivity()
         fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(getActivity());
         locationRequest = new LocationRequest();
-        locationRequest.setInterval(10000);
+        locationRequest.setInterval(10*1000);
+        locationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
         locationCallback = new LocationCallback(){
 
             @Override
             public void onLocationResult(LocationResult locationResult) {
                 for (Location location : locationResult.getLocations()) {
+                    if(mapCircle != null){
+                        mapCircle.remove();
+                    }
                     pinpointCurrentLocation();
-                    Log.e("LOCATION CHANGED", location.toString());
                     loc = location.toString();
-                    testNotification();
                 }
             };
         };
@@ -177,11 +181,13 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
     }
 
     private void createUserCircle(){
-        googleMap.addCircle(new CircleOptions()
-        .center(myLocation)
-        .radius(3000)
-        .strokeColor(Color.RED)
-        .fillColor(0x220000FF));
+        CircleOptions circleOptions = new CircleOptions()
+                .center(myLocation)
+                .radius(3000)
+                .strokeColor(Color.RED)
+                .fillColor(0x220000FF);
+
+        mapCircle = googleMap.addCircle(circleOptions);
     }
 
     @Override
@@ -194,7 +200,6 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
             fusedLocationProviderClient.requestLocationUpdates(locationRequest,
                     locationCallback,
                     null /* Looper */);
-            Log.e("LOCATION LISTENER START", "KJGUO");
         }catch (SecurityException e){
             e.printStackTrace();
         }
@@ -208,21 +213,5 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
 
     private void stopLocationUpdates() {
         fusedLocationProviderClient.removeLocationUpdates(locationCallback);
-        Log.e("LOCATION LISTENER STOP", "KJGUO");
-    }
-
-    public void testNotification(){
-        Notification notification = new Notification.Builder(getActivity())
-                .setSmallIcon(R.mipmap.ic_launcher)
-                .setContentTitle("Location Changed")
-                .setContentText(loc)
-                .setAutoCancel(true)
-                .setPriority(Notification.PRIORITY_MAX)
-                .setDefaults(Notification.DEFAULT_VIBRATE)
-                .build();
-
-        NotificationManager notificationManager =
-                (NotificationManager) getActivity().getSystemService(Context.NOTIFICATION_SERVICE);
-        notificationManager.notify(65565, notification);
     }
 }

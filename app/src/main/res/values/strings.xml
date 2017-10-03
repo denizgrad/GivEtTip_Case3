@@ -3,18 +3,20 @@
 
 
     <!-- Main Activity -->
-    <string name="username">Username</string>
-    <string name="password">Password</string>
+    <string name="username">e-mail</string>
+    <string name="password">password</string>
     <string name="login">Log In</string>
     <string name="sign_up">Sign Up</string>
     <string name="logo_description">Giv Et Tip Logo</string>
 
     <!--New User Activity-->
-    <string name="new_user">Create Your Profile</string>
-    <string name="new_username">Username*</string>
-    <string name="new_password">Password*</string>
-    <string name="repeat_password">Re-Enter Password*</string>
-    <string name="email">E-Mail*</string>
+    <string name="new_user">Create your profile</string>
+    <string name="new_name">first name *</string>
+    <string name="new_surname">last name *</string>
+    <string name="email">e-mail *</string>
+    <string name="new_password">password *</string>
+    <string name="repeat_password">re-enter password *</string>
+
     <string name="done">Done</string>
 
     <!-- User Activity -->
@@ -24,11 +26,11 @@
     <string name="title_activity_maps">Map</string>
 
     <!-- Map Fragment -->
-    <string name="dialog_title">No Location Permission</string>
+    <string name="dialog_title">No location permission</string>
     <string name="dialog_message">To upload pictures with the associated location and
         see places where other GivEtTip users have taken pictures, please grant the app to
         access location data.
     </string>
-    <string name="add">Add Permission</string>
+    <string name="add">Add permission</string>
     <string name="dont_allow">Don\'t Allow</string>
 </resources>
