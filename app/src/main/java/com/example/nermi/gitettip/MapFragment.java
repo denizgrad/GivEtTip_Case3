@@ -38,6 +38,8 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 
+import utilities.ApiRecordCoordinate;
+
 
 /**
  * A simple {@link Fragment} subclass.
@@ -81,6 +83,9 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
                 }
             };
         };
+        
+        // TODO: just testing, remove
+        new ApiRecordCoordinate().execute();
 
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_map, container, false);
