@@ -33,4 +33,7 @@
     </string>
     <string name="add">Add permission</string>
     <string name="dont_allow">Don\'t Allow</string>
+
+    <!-- Tip Activity -->
+    <string name="acceptTip">Accept Tip</string>
 </resources>
