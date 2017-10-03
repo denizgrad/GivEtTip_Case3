@@ -24,5 +24,7 @@ public class ApiRanking extends AsyncTask<Void, Void, List<Rank>> {
     protected void onPostExecute(List<Rank> coords) {
         super.onPostExecute(coords);
         //TODO: Do something with rankings. Show them in the gragment.
+
+
     }
 }
