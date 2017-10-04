@@ -42,7 +42,7 @@ public class Rank {
     public String getScoreString() {
         String positionS = String.format("%4d", this.getPosition()).toString();
         String emailS = String.format("%s", this.getUserEmail()).toString();
-        String scoreS = String.format("%04.1f", this.getScore()).toString();
+        String scoreS = String.format("%4.1f", this.getScore()).toString();
         return  positionS + "\t\t" + emailS + ":\t\t" + scoreS;
     }
     public Rank(int userId, int position, double score, String userEmail) {
