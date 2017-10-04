@@ -7,6 +7,7 @@ import android.app.Notification;
 import android.app.NotificationManager;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.location.Location;
@@ -34,6 +35,7 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.model.Circle;
 import com.google.android.gms.maps.model.CircleOptions;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
@@ -108,6 +110,16 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
             //googleMap.addMarker(new MarkerOptions().position(new LatLng(50,22)).title("Hello World"));
             // TODO: add markers
             new ApiRecordCoordinate(googleMap).execute();
+
+            googleMap.setOnInfoWindowClickListener(new GoogleMap.OnInfoWindowClickListener() {
+                @Override
+                public void onInfoWindowClick(Marker marker) {
+                    if(marker != null){
+                        Intent intent = new Intent(getActivity(), TipActivity.class);
+                        startActivity(intent);
+                    }
+                }
+            });
             startLocationUpdates();
 
         }else {
