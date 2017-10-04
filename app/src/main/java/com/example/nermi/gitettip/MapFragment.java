@@ -82,9 +82,6 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
                 }
             };
         };
-        
-        // TODO: just testing, remove
-        new ApiRecordCoordinate().execute();
 
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_map, container, false);
@@ -99,6 +96,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
         mapView.getMapAsync(this);
     }
 
+
     @Override
     public void onMapReady(GoogleMap map) {
         googleMap = map;
@@ -108,6 +106,8 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
             pinpointCurrentLocation();
             googleMap.setMyLocationEnabled(true);
             //googleMap.addMarker(new MarkerOptions().position(new LatLng(50,22)).title("Hello World"));
+            // TODO: add markers
+            new ApiRecordCoordinate(googleMap).execute();
             startLocationUpdates();
 
         }else {
