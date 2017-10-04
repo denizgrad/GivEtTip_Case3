@@ -40,7 +40,7 @@ public class ApiRecordCoordinate extends AsyncTask<Void, Void, List<RecordCoordi
         super.onPostExecute(coords);
         for(RecordCoordinate rc : coords){
             googleMap.addMarker(new MarkerOptions().position(new LatLng(rc.getGpsLatitude(), rc.getGpsLongitude()))
-                    .title(rc.getAuthorEmail()));
+                    .title(rc.getAuthorEmail()).snippet(Integer.toString(rc.getRecordId())));
         }
     }
 }

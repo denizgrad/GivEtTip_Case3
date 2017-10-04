@@ -114,8 +114,10 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
             googleMap.setOnInfoWindowClickListener(new GoogleMap.OnInfoWindowClickListener() {
                 @Override
                 public void onInfoWindowClick(Marker marker) {
-                    if(marker != null){
+                    if(marker != null) {
+                        int recordId = Integer.parseInt(marker.getSnippet());
                         Intent intent = new Intent(getActivity(), TipActivity.class);
+                        intent.putExtra("RECORD_ID", recordId);
                         startActivity(intent);
                     }
                 }
