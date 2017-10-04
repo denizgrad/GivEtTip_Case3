@@ -14,6 +14,4 @@ public class AppConstants {
     public static final String API_USERNAME = "giveettip";
     public static final String API_PASSWORD = "giveettip";
     public static final String API_CREDENTIALS = API_USERNAME + ":" + API_PASSWORD;
-
-    public static String[] RANK_STRINGS;
 }

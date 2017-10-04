@@ -28,7 +28,6 @@ public class UserActivity extends AppCompatActivity {
         setContentView(R.layout.activity_user);
 
         initializeTabs();
-        new ApiRanking().execute();
 
         fab = (FloatingActionButton) findViewById(R.id.fab);
     }
