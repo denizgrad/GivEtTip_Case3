@@ -1,7 +1,5 @@
 package com.example.nermi.gitettip;
 
-import android.app.Activity;
-import android.app.FragmentManager;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.provider.MediaStore;
@@ -10,12 +8,8 @@ import android.support.v4.app.FragmentTabHost;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.Gravity;
 import android.view.View;
-import android.widget.ImageView;
 import android.widget.TabHost.TabSpec;
-import android.widget.TabWidget;
-import android.widget.TextView;
 
 import java.io.ByteArrayOutputStream;
 
@@ -53,7 +47,7 @@ public class UserActivity extends AppCompatActivity {
         /* Add the tabs  to the TabHost to display, and choose the fragment to be
          * displayed when selecting a tab. */
         tabHost.addTab(accountTab, AccountFragment.class, null);
-        tabHost.addTab(scoresTab, ScoresFragment.class, null);
+        tabHost.addTab(scoresTab, ScoresListFragment.class, null);
         tabHost.addTab(mapTab, MapFragment.class, null);
     }
 
