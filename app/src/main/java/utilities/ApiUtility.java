@@ -101,7 +101,7 @@ public class ApiUtility {
         }
     }
 
-    public static <T> T getHttpGetResponse(String urlEnding, String parameter, Class<T> type) throws Exception{
+    public static <T> T getHttpGetResponse(String urlEnding, String parameter, Class<T> type) throws Exception {
         HttpURLConnection conn = prepareConnection(urlEnding + "/" + parameter, "GET", null);
         String stream = getInputStream(conn);
 

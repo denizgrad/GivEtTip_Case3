@@ -55,7 +55,6 @@ public class UserActivity extends AppCompatActivity {
         tabHost.addTab(mapTab, MapFragment.class, null);
     }
     public void logOut(View view) {
-// When the button for log out is pressed, do this.
         SharedPreferencesUtility.removeValue(this, "userId"); // log out the user
         Intent intent = new Intent(this, MainActivity.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);   // remove the stack with activities
