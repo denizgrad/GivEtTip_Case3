@@ -1,5 +1,9 @@
 package utilities;
 
+import java.util.List;
+
+import models.Rank;
+
 /**
  * Created by Matic-ProBook on 20. 09. 2017.
  */
@@ -10,4 +14,6 @@ public class AppConstants {
     public static final String API_USERNAME = "giveettip";
     public static final String API_PASSWORD = "giveettip";
     public static final String API_CREDENTIALS = API_USERNAME + ":" + API_PASSWORD;
+
+    public static String[] RANK_STRINGS;
 }

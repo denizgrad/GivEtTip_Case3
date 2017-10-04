@@ -13,6 +13,9 @@ import android.widget.TabHost.TabSpec;
 
 import java.io.ByteArrayOutputStream;
 
+import utilities.ApiRanking;
+import utilities.AppConstants;
+
 public class UserActivity extends AppCompatActivity {
 
     private static final int CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE = 100;
@@ -25,6 +28,7 @@ public class UserActivity extends AppCompatActivity {
         setContentView(R.layout.activity_user);
 
         initializeTabs();
+        new ApiRanking().execute();
 
         fab = (FloatingActionButton) findViewById(R.id.fab);
     }

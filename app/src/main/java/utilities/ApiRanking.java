@@ -2,10 +2,15 @@ package utilities;
 
 import android.os.AsyncTask;
 import android.util.Log;
+import android.view.LayoutInflater;
+import android.widget.ArrayAdapter;
+
 import java.util.List;
 import models.Rank;
 
 public class ApiRanking extends AsyncTask<Void, Void, List<Rank>> {
+
+    LayoutInflater inflater;
 
     // This is run in a background thread
     @Override
@@ -21,10 +26,15 @@ public class ApiRanking extends AsyncTask<Void, Void, List<Rank>> {
     }
 
     @Override
-    protected void onPostExecute(List<Rank> coords) {
-        super.onPostExecute(coords);
-        //TODO: Do something with rankings. Show them in the gragment.
+    protected void onPostExecute(List<Rank> ranks) {
+        super.onPostExecute(ranks);
 
-
+        String[] ranksStrings = new String[ranks.size()];
+        int i = 0;
+        for (Rank r : ranks) {
+            ranksStrings[0] = r.getScoreString();
+            i++;
+        }
+        AppConstants.RANK_STRINGS = ranksStrings;
     }
 }
