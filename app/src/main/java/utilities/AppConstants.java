@@ -1,5 +1,9 @@
 package utilities;
 
+import java.util.List;
+
+import models.Rank;
+
 /**
  * Created by Matic-ProBook on 20. 09. 2017.
  */

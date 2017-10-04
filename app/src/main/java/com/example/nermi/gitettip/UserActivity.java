@@ -13,6 +13,8 @@ import android.widget.TabHost.TabSpec;
 
 import java.io.ByteArrayOutputStream;
 
+import utilities.ApiRanking;
+import utilities.AppConstants;
 import utilities.SharedPreferencesUtility;
 
 public class UserActivity extends AppCompatActivity {
@@ -49,7 +51,7 @@ public class UserActivity extends AppCompatActivity {
         /* Add the tabs  to the TabHost to display, and choose the fragment to be
          * displayed when selecting a tab. */
         tabHost.addTab(accountTab, AccountFragment.class, null);
-        tabHost.addTab(scoresTab, ScoresFragment.class, null);
+        tabHost.addTab(scoresTab, ScoresListFragment.class, null);
         tabHost.addTab(mapTab, MapFragment.class, null);
     }
     public void logOut(View view) {

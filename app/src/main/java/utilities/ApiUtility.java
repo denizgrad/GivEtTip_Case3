@@ -18,6 +18,7 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
+import models.Rank;
 import models.RecordCoordinate;
 import models.Response;
 
@@ -117,6 +118,22 @@ public class ApiUtility {
             Gson gson = new Gson();
             Type listType = new TypeToken<ArrayList<RecordCoordinate>>(){}.getType();
             List<RecordCoordinate> response = gson.fromJson(String.valueOf(stream), listType);
+            conn.disconnect();
+            return response;
+        } catch (Exception e) {
+            e.printStackTrace();
+            Log.i("error", e.toString());
+            return null;
+        }
+    }
+
+    public static List<Rank> getRank(String urlEnding) {
+        try {
+            HttpURLConnection conn = prepareConnection(urlEnding, "GET", null);
+            String stream = getInputStream(conn);
+            Gson gson = new Gson();
+            Type listType = new TypeToken<ArrayList<Rank>>(){}.getType();
+            List<Rank> response = gson.fromJson(String.valueOf(stream), listType);
             conn.disconnect();
             return response;
         } catch (Exception e) {
