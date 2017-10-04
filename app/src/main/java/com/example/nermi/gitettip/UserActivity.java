@@ -2,11 +2,11 @@ package com.example.nermi.gitettip;
 
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.FragmentTabHost;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.TabHost.TabSpec;
@@ -15,6 +15,7 @@ import java.io.ByteArrayOutputStream;
 
 import utilities.ApiRanking;
 import utilities.AppConstants;
+import utilities.SharedPreferencesUtility;
 
 public class UserActivity extends AppCompatActivity {
 
@@ -53,7 +54,13 @@ public class UserActivity extends AppCompatActivity {
         tabHost.addTab(scoresTab, ScoresListFragment.class, null);
         tabHost.addTab(mapTab, MapFragment.class, null);
     }
-
+    public void logOut(View view) {
+// When the button for log out is pressed, do this.
+        SharedPreferencesUtility.removeValue(this, "userId"); // log out the user
+        Intent intent = new Intent(this, MainActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);   // remove the stack with activities
+        this.startActivity(intent); // go to main activity
+    }
     //TODO: Return image in the right format (PNG or JPEG) and save under res folder
     //https://developer.android.com/training/camera/photobasics.html
     @Override

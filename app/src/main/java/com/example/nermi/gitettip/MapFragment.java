@@ -7,6 +7,7 @@ import android.app.Notification;
 import android.app.NotificationManager;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.location.Location;
@@ -34,6 +35,7 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.model.Circle;
 import com.google.android.gms.maps.model.CircleOptions;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
@@ -53,7 +55,6 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
     private LocationRequest locationRequest;
     private LocationCallback locationCallback;
     LatLng myLocation;
-    String loc;
 
     private static final int MY_PERMISSIONS_REQUEST_FINE_LOCATION = 123;
 
@@ -78,14 +79,11 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
                     if(mapCircle != null){
                         mapCircle.remove();
                     }
-                    pinpointCurrentLocation();
-                    loc = location.toString();
+                    //pinpointCurrentLocation();
+                    createUserCircle();
                 }
             };
         };
-        
-        // TODO: just testing, remove
-        new ApiRecordCoordinate().execute();
 
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_map, container, false);
@@ -100,6 +98,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
         mapView.getMapAsync(this);
     }
 
+
     @Override
     public void onMapReady(GoogleMap map) {
         googleMap = map;
@@ -108,6 +107,19 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
                 == PackageManager.PERMISSION_GRANTED){
             pinpointCurrentLocation();
             googleMap.setMyLocationEnabled(true);
+            //googleMap.addMarker(new MarkerOptions().position(new LatLng(50,22)).title("Hello World"));
+            // TODO: add markers
+            new ApiRecordCoordinate(googleMap).execute();
+
+            googleMap.setOnInfoWindowClickListener(new GoogleMap.OnInfoWindowClickListener() {
+                @Override
+                public void onInfoWindowClick(Marker marker) {
+                    if(marker != null){
+                        Intent intent = new Intent(getActivity(), TipActivity.class);
+                        startActivity(intent);
+                    }
+                }
+            });
             startLocationUpdates();
 
         }else {

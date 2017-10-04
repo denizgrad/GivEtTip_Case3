@@ -4,6 +4,7 @@ import android.util.Base64;
 import android.util.Log;
 
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
 
 import java.io.BufferedInputStream;
@@ -98,6 +99,16 @@ public class ApiUtility {
             Log.i("error", e.toString());
             return null;
         }
+    }
+
+    public static <T> T getHttpGetResponse(String urlEnding, String parameter, Class<T> type) throws Exception{
+        HttpURLConnection conn = prepareConnection(urlEnding + "/" + parameter, "GET", null);
+        String stream = getInputStream(conn);
+
+        Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd HH:mm:ss.SSSZ").create();
+        T target = gson.fromJson(stream, type); // deserializes json into target
+//        conn.disconnect();
+        return target;
     }
 
     public static List<RecordCoordinate> getRecordCoordinate(String urlEnding) {
