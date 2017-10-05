@@ -20,6 +20,12 @@ public class User extends BaseModel implements Serializable {
     /* public methods */
     public User() {}
 
+    public User(int userID) {
+        this.setId(userID);
+        this.active = true;
+        this.setDeleted(false);
+    }
+
     public User(String email, String password) {
         this.email = email;
         this.password = password;
