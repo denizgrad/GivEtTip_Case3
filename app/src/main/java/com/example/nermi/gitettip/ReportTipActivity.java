@@ -25,8 +25,8 @@ public class ReportTipActivity extends AppCompatActivity {
         iv = (ImageView) findViewById(R.id.tipCapture);
         iv.setImageURI(imageUri);
         iv.setRotation(90);
-        double lattitude = Double.valueOf(intent.getStringExtra("LAT"));
-        double longitude = Double.valueOf(intent.getStringExtra("LONG"));
+        double lattitude = intent.getDoubleExtra("LAT", 0);
+        double longitude = intent.getDoubleExtra("LONG", 0);
         ///MATIC TODO
 
     }
