@@ -110,8 +110,8 @@ public class UserActivity extends AppCompatActivity {
         Location location = null;
         // check if GPS enabled
         if (gps.canGetLocation()) {
-            double latitude = gps.getLatitude();
-            double longitude = gps.getLongitude();
+//            double latitude = gps.getLatitude();
+//            double longitude = gps.getLongitude();
             location = gps.getLocation();
             // \n is for new line
 //            Toast.makeText(getApplicationContext(), "Your Location is - \nLat: "
