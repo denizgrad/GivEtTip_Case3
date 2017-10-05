@@ -2,16 +2,24 @@ package com.example.nermi.gitettip;
 
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.FragmentTabHost;
+import android.support.v4.content.FileProvider;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.TabHost.TabSpec;
 
 import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 import utilities.SharedPreferencesUtility;
 
@@ -20,6 +28,7 @@ public class UserActivity extends AppCompatActivity {
     private static final int CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE = 100;
 
     FloatingActionButton fab;
+    String mCurrentPhotoPath;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -66,14 +75,22 @@ public class UserActivity extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE && resultCode == RESULT_OK){
             //Return a bitmap of the captured image
-            Bitmap bm = (Bitmap) data.getExtras().get("data");
+           // Bitmap bm = (Bitmap) data.getExtras().get("data");
 
             //Convert the bitmap to byte array
-            ByteArrayOutputStream stream = new ByteArrayOutputStream();
+            /*ByteArrayOutputStream stream = new ByteArrayOutputStream();
             bm.compress(Bitmap.CompressFormat.PNG, 100, stream);
             byte[] byteArray = stream.toByteArray();
             Log.e("IMAGE: ", byteArray.toString());
-            Log.e("IMAGE LENGTH: ", Integer.toString(byteArray.length));
+            Log.e("IMAGE LENGTH: ", Integer.toString(byteArray.length));*/
+
+            if (mCurrentPhotoPath == null)
+                return;
+            else{
+                Intent intent = new Intent(this, ReportTipActivity.class);
+                intent.putExtra("IMAGE", mCurrentPhotoPath);
+                startActivity(intent);
+            }
         }
     }
 
@@ -84,9 +101,42 @@ public class UserActivity extends AppCompatActivity {
         // which returns the first activity component that can handle the intent. Performing this check
         // is important because if you call startActivityForResult() using an intent that no app can handle,
         // your app will crash. So as long as the result is not null, it's safe to use the intent
-        if(intent.resolveActivity(getPackageManager()) != null)
-            startActivityForResult(intent, CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE);
+        if(intent.resolveActivity(getPackageManager()) != null) {
+            // Create the File where the photo should go
+            File photoFile = null;
+            try {
+                photoFile = createImageFile();
+            } catch (IOException ex) {
+                // Error occurred while creating the File
+                ex.printStackTrace();
+            }
 
+            // Continue only if the File was successfully created
+            if (photoFile != null) {
+                Uri photoURI = FileProvider.getUriForFile(this,
+                        "com.example.android.fileprovider",
+                        photoFile);
+                intent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI);
+                startActivityForResult(intent, CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE);
+            }
+        }
+
+    }
+
+    private File createImageFile() throws IOException {
+        // Create an image file name
+        String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
+        String imageFileName = "PNG_" + timeStamp + "_";
+        File storageDir = getExternalFilesDir(Environment.DIRECTORY_PICTURES);
+        File image = File.createTempFile(
+                imageFileName,  /* prefix */
+                ".png",         /* suffix */
+                storageDir      /* directory */
+        );
+
+        // Save a file: path for use with ACTION_VIEW intents
+        mCurrentPhotoPath = image.getAbsolutePath();
+        return image;
     }
 
 }
