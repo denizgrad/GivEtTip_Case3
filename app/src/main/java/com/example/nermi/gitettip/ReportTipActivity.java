@@ -18,6 +18,8 @@ public class ReportTipActivity extends AppCompatActivity {
     ImageView iv;
     TextView descriptionView;
     Uri imageUri;
+    double latitude;
+    double longitude;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,10 +32,9 @@ public class ReportTipActivity extends AppCompatActivity {
         iv = (ImageView) findViewById(R.id.tipCapture);
         iv.setImageURI(imageUri);
         iv.setRotation(90);
-        double lattitude = intent.getDoubleExtra("LAT", 0);
-        double longitude = intent.getDoubleExtra("LONG", 0);
-        ///MATIC TODO
 
+        latitude = intent.getDoubleExtra("LAT", 0);
+        longitude = intent.getDoubleExtra("LONG", 0);
     }
 
     public void onSendTipClick(View view) {
@@ -41,7 +42,7 @@ public class ReportTipActivity extends AppCompatActivity {
         String description = descriptionView.getText().toString();
 
         User u = new User(SharedPreferencesUtility.readValue(this, "userId"));
-        Record r = new Record(u, null, 1.01, 1.01, description);
+        Record r = new Record(u, null, latitude, longitude, description);
 
         new ApiPostRecord(imageUri).execute(r);
         Intent intent = new Intent(this, UserActivity.class);
