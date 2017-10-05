@@ -1,5 +1,6 @@
 package models;
 
+import android.graphics.Bitmap;
 import java.io.Serializable;
 
 /**
@@ -9,6 +10,7 @@ import java.io.Serializable;
 public class Record extends BaseModel implements Serializable {
     private User author;
     private String imagePath;
+    private Bitmap image;
     private double gpsLatitude;
     private double gpsLongitude;
     private String description;
@@ -59,5 +61,11 @@ public class Record extends BaseModel implements Serializable {
     }
     public void setDone(boolean done) {
         this.done = done;
+    }
+    public Bitmap getImage() {
+        return image;
+    }
+    public void setImage(Bitmap image) {
+        this.image = image;
     }
 }
