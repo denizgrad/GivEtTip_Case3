@@ -19,6 +19,7 @@ import utilities.SharedPreferencesUtility;
 
 public class MainActivity extends AppCompatActivity {
 
+    public static String TAG = "GIVEETTIP";
     EditText username;
     EditText password;
 

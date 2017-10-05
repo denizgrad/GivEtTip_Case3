@@ -233,4 +233,21 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
     private void stopLocationUpdates() {
         fusedLocationProviderClient.removeLocationUpdates(locationCallback);
     }
+    Location loc = null;
+    public Location getCurrentLocation(){
+        try{
+            fusedLocationProviderClient.getLastLocation()
+                    .addOnSuccessListener(getActivity(), new OnSuccessListener<Location>() {
+                        @Override
+                        public void onSuccess(Location location) {
+                            if (location != null) {
+                                loc = location;
+                            }
+                        }
+                    });
+        }catch (SecurityException e){
+            e.printStackTrace();
+        }
+        return loc;
+    }
 }

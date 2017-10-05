@@ -2,6 +2,7 @@ package com.example.nermi.gitettip;
 
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.location.Location;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
@@ -13,6 +14,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.TabHost.TabSpec;
+import android.widget.Toast;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -42,7 +44,7 @@ public class UserActivity extends AppCompatActivity {
         fab = (FloatingActionButton) findViewById(R.id.fab);
     }
 
-    private void initializeTabs(){
+    private void initializeTabs() {
         // create the TabHost that will contain the Tabs
         FragmentTabHost tabHost = (FragmentTabHost) findViewById(R.id.tabHost);
         tabHost.setup(this.getBaseContext(), getSupportFragmentManager(), android.R.id.tabcontent);
@@ -63,20 +65,22 @@ public class UserActivity extends AppCompatActivity {
         tabHost.addTab(scoresTab, ScoresListFragment.class, null);
         tabHost.addTab(mapTab, MapFragment.class, null);
     }
+
     public void logOut(View view) {
         SharedPreferencesUtility.removeValue(this, "userId"); // log out the user
         Intent intent = new Intent(this, MainActivity.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);   // remove the stack with activities
         this.startActivity(intent); // go to main activity
     }
+
     //TODO: Return image in the right format (PNG or JPEG) and save under res folder
     //https://developer.android.com/training/camera/photobasics.html
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE && resultCode == RESULT_OK){
+        if (requestCode == CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE && resultCode == RESULT_OK) {
             //Return a bitmap of the captured image
-           // Bitmap bm = (Bitmap) data.getExtras().get("data");
+            // Bitmap bm = (Bitmap) data.getExtras().get("data");
 
             //Convert the bitmap to byte array
             /*ByteArrayOutputStream stream = new ByteArrayOutputStream();
@@ -87,12 +91,38 @@ public class UserActivity extends AppCompatActivity {
 
             if (mCurrentPhotoPath == null)
                 return;
-            else{
+            else {
+                //Extract the location
+                Location loc = getLocation();
                 Intent intent = new Intent(this, ReportTipActivity.class);
                 intent.putExtra("IMAGE", mCurrentPhotoPath);
+                intent.putExtra("LAT", loc.getLatitude());
+                intent.putExtra("LONG", loc.getLongitude());
                 startActivity(intent);
             }
         }
+    }
+
+    MyLocationListener gps;
+
+    private Location getLocation() {
+        gps = new MyLocationListener(this);
+        Location location = null;
+        // check if GPS enabled
+        if (gps.canGetLocation()) {
+            double latitude = gps.getLatitude();
+            double longitude = gps.getLongitude();
+            location = gps.getLocation();
+            // \n is for new line
+//            Toast.makeText(getApplicationContext(), "Your Location is - \nLat: "
+//                    + latitude + "\nLong: " + longitude, Toast.LENGTH_LONG).show();
+        } else {
+            // can't get location
+            // GPS or Network is not enabled
+            // Ask user to enable GPS/network in settings
+            gps.showSettingsAlert();
+        }
+        return location;
     }
 
     public void goToCamera(View view) {
