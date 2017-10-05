@@ -10,6 +10,7 @@ public class ApiGetRecord extends AsyncTask<String, Void, Record> {
         String recordId = params[0];
         try {
             ret = ApiUtility.getHttpGetResponse("records", String.valueOf(recordId), Record.class);
+            ret.setImage(ImageUtility.decodeBase64(ret.getImagePath()));
             return ret;
         } catch (Exception e) {
             e.printStackTrace();

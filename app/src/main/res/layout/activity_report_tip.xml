@@ -39,6 +39,7 @@
         android:textStyle="normal"
         android:textSize="25sp"
         android:id="@+id/sendButton"
+        android:onClick="onSendTipClick"
         android:background="@color/colorGreenShade"
         />
 </LinearLayout>
