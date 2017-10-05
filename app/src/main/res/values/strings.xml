@@ -36,4 +36,8 @@
 
     <!-- Tip Activity -->
     <string name="acceptTip">Accept Tip</string>
+
+    <!-- Report Tip Activity -->
+    <string name="sendTip">Send Tip</string>
+    <string name="tipDescription">Insert tip description here</string>
 </resources>
