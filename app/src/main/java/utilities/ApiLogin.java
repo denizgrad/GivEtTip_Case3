@@ -38,7 +38,7 @@ public class ApiLogin extends AsyncTask<User, Void, Boolean> {
             Log.i("JSON", json);
 
             String urlEnding = login ? "login" : "users";
-            Response response = ApiUtility.getResponse(urlEnding, "POST", json);
+            Response response = ApiUtility.getHttpPostResponse(urlEnding, json, Response.class);
             this.responseCode = response.getStatusCode();
             if (this.responseCode == 200 || this.responseCode == 201) {
                 int userId = Integer.parseInt(response.getReturnKey());

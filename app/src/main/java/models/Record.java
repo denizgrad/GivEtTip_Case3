@@ -16,6 +16,14 @@ public class Record extends BaseModel implements Serializable {
 
 	/* public methods */
 
+	public Record (User author, String imagePath, double gpsLatitude, double gpsLongitude, String description) {
+        this.author = author;
+        this.imagePath = imagePath;
+        this.gpsLatitude = gpsLatitude;
+        this.gpsLongitude = gpsLongitude;
+        this.description = description;
+    }
+
     public User getAuthor() {
         return author;
     }

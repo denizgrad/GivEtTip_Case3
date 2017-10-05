@@ -11,8 +11,10 @@ import android.text.TextUtils;
 import android.view.View;
 import android.widget.EditText;
 
+import models.Record;
 import models.User;
 import utilities.ApiLogin;
+import utilities.ApiPostRecord;
 import utilities.SharedPreferencesUtility;
 
 public class MainActivity extends AppCompatActivity {

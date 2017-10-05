@@ -86,14 +86,14 @@ public class ApiUtility {
         }
     }
 
-    public static Response getResponse(String urlEnding, String httpMethod, String json) {
+    public static <T> T getHttpPostResponse(String urlEnding, String json, Class<T> type) {
         try {
-            HttpURLConnection conn = prepareConnection(urlEnding, httpMethod, json);
+            HttpURLConnection conn = prepareConnection(urlEnding, "POST", json);
             String stream = getInputStream(conn);
             Gson gson = new Gson();
-            Response response = gson.fromJson(String.valueOf(stream), Response.class);
+            T target = gson.fromJson(stream, type); // deserializes json into target
             conn.disconnect();
-            return response;
+            return target;
         } catch (Exception e) {
             e.printStackTrace();
             Log.i("error", e.toString());
