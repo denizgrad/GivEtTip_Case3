@@ -30,7 +30,10 @@
                 android:maxLines="15"
                 android:scrollbars="vertical"
                 android:id="@+id/tipDescription"
-                android:text="" />
+                android:text=""
+                android:layout_marginStart="10dp"
+                android:layout_marginEnd="10dp"
+                />
     </RelativeLayout>
 
     <Button

@@ -33,9 +33,11 @@
                 <android.support.design.widget.FloatingActionButton
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    app:fabSize="normal"
                     android:id="@+id/fab"
-                    android:src="@drawable/ic_action_name"
+                    android:src="@drawable/iconmonstr_light_bulb_6_64"
                     android:layout_gravity="bottom|end"
+                    android:backgroundTint="@color/colorGreenShade"
                     android:layout_margin="10dp"
                     android:onClick="goToCamera"/>
             </FrameLayout>
