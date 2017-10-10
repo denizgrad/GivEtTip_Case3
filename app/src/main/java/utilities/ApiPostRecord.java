@@ -3,16 +3,8 @@ package utilities;
 import android.app.Activity;
 import android.net.Uri;
 import android.os.AsyncTask;
-import android.os.Environment;
-import android.util.Base64;
 import android.util.Log;
 import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
 
 import models.Record;
 import models.Response;
