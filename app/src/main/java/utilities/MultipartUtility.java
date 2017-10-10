@@ -43,14 +43,17 @@ public class MultipartUtility {
         this.charset = charset;
 
         // creates a unique boundary based on time stamp
-        boundary = "===" + System.currentTimeMillis() + "===";
+        boundary = "" + System.currentTimeMillis() + "";
         URL url = new URL(AppConstants.API_URL + requestURL);
         httpConn = (HttpURLConnection) url.openConnection();
         httpConn.setUseCaches(false);
-        httpConn.setDoOutput(true);    // indicates POST method
-        httpConn.setDoInput(true);
-        httpConn.setRequestProperty("Content-Type",
-                "multipart/form-data; boundary=" + boundary);
+        httpConn.setDoOutput(true);
+        httpConn.setRequestMethod("POST");
+        httpConn.setRequestProperty("Connection", "Keep-Alive");
+        httpConn.setRequestProperty("Cache-Control", "no-cache");
+        httpConn.setRequestProperty(
+                "Content-Type", "multipart/form-data;boundary=" + this.boundary);
+        httpConn.setRequestProperty("Authorization", ApiUtility.getBasicAutentication());
         outputStream = httpConn.getOutputStream();
         writer = new PrintWriter(new OutputStreamWriter(outputStream, charset),
                 true);
@@ -80,7 +83,29 @@ public class MultipartUtility {
      * @param uploadFile a File to be uploaded
      * @throws IOException
      */
-    public void addFilePart(String fieldName, File uploadFile)
+    public void addFilePart(String fieldName, String str)
+            throws IOException {
+        String fileName = "file.json";
+        writer.append("--" + boundary).append(LINE_FEED);
+        writer.append(
+                "Content-Disposition: form-data; name=\"" + fieldName
+                        + "\"; filename=\"" + fileName + "\"")
+                .append(LINE_FEED);
+        writer.append(LINE_FEED);
+        writer.flush();
+
+        ByteArrayInputStream inputStream = new ByteArrayInputStream(str.getBytes());
+        byte[] buffer = new byte[4096];
+        int bytesRead = -1;
+        while ((bytesRead = inputStream.read(buffer)) != -1) {
+            outputStream.write(buffer, 0, bytesRead);
+        }
+        outputStream.flush();
+        inputStream.close();
+        writer.append(LINE_FEED);
+        writer.flush();
+    }
+    public void addFilePartNOUSE(String fieldName, File uploadFile)
             throws IOException {
         String fileName = uploadFile.getName();
         writer.append("--" + boundary).append(LINE_FEED);
@@ -107,33 +132,7 @@ public class MultipartUtility {
         writer.append(LINE_FEED);
         writer.flush();
     }
-    public void addFilePart(String fieldName, String str)
-            throws IOException {
-        String fileName = "file.json";
-        writer.append("--" + boundary).append(LINE_FEED);
-        writer.append(
-                "Content-Disposition: form-data; name=\"" + fieldName
-                        + "\"; filename=\"" + fileName + "\"")
-                .append(LINE_FEED);
-        writer.append(
-                "Content-Type: application/json")
-//                        + URLConnection.guessContentTypeFromName(fileName))
-                .append(LINE_FEED);
-//        writer.append("Content-Transfer-Encoding: binary").append(LINE_FEED);
-        writer.append(LINE_FEED);
-        writer.flush();
 
-        ByteArrayInputStream inputStream = new ByteArrayInputStream(str.getBytes());
-        byte[] buffer = new byte[4096];
-        int bytesRead = -1;
-        while ((bytesRead = inputStream.read(buffer)) != -1) {
-            outputStream.write(buffer, 0, bytesRead);
-        }
-        outputStream.flush();
-        inputStream.close();
-        writer.append(LINE_FEED);
-        writer.flush();
-    }
     /**
      * Adds a header field to the request.
      *

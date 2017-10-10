@@ -37,17 +37,12 @@ public class ApiPostRecord extends AsyncTask<Record, Void, Response> {
             Gson gson = new Gson();
             String json = gson.toJson(r);
 
-//            StringBuffer sb = new StringBuffer(json);
-//            File tmp = writeToFile(sb);
-
             MultipartUtility muti = new MultipartUtility("records", "UTF-8");
-            muti.addHeaderField("Authorization", ApiUtility.getBasicAutentication());
             muti.addFilePart("jsonFile" , json);
 
             String stream = muti.finish();
 
             Response target = gson.fromJson(stream, Response.class); // deserializes json into target
-//            tmp.delete();
             return target;
         } catch (Exception e) {
             e.printStackTrace();
