@@ -9,7 +9,9 @@ import models.Rank;
  */
 
 public class AppConstants {
-    public static String API_URL = "https://getjavaapi.eu-de.mybluemix.net/main/";
+//    public static String API_URL = "https://getjavaapi.eu-de.mybluemix.net/main/";
+    public static String API_URL = "https://giveettip.eu-de.mybluemix.net/main/"; // deniz dont delete pls
+//public static String API_URL = "http://10.0.0.2:8080/cloud/main/"; // deniz dont delete pls
 //    public static String API_URL = "http://localhost:8080/cloud/main/login/";
     public static final String API_USERNAME = "giveettip";
     public static final String API_PASSWORD = "giveettip";

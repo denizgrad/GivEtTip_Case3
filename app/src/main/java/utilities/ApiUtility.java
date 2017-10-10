@@ -12,6 +12,7 @@ import java.io.BufferedReader;
 import java.io.DataOutputStream;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.UnsupportedEncodingException;
 import java.lang.reflect.Type;
 import java.net.HttpURLConnection;
 import java.net.URL;
@@ -27,21 +28,24 @@ import models.Response;
  */
 
 public class ApiUtility {
+    public static String getBasicAutentication() throws UnsupportedEncodingException {
+        byte[] data = AppConstants.API_CREDENTIALS.getBytes("UTF-8");
+        String base64 = Base64.encodeToString(data, Base64.DEFAULT);
+        String encodedCredentials = "Basic " + base64;
+        return encodedCredentials;
+    }
 
     private static HttpURLConnection prepareConnection(String urlEnding, String httpMethod, String json) {
         try {
             boolean METHOD_GET = (httpMethod.equals("GET")) ? true : false;
             URL url = new URL(AppConstants.API_URL + urlEnding);
 
-            byte[] data = AppConstants.API_CREDENTIALS.getBytes("UTF-8");
-            String base64 = Base64.encodeToString(data, Base64.DEFAULT);
-            String encodedCredentials = "Basic " + base64;
 
             HttpURLConnection conn = (HttpURLConnection) url.openConnection();
             conn.setRequestMethod(httpMethod);
             if (!METHOD_GET)
                 conn.setRequestProperty("Content-Type", "application/json; charset=UTF-8");
-            conn.setRequestProperty("Authorization", encodedCredentials);
+            conn.setRequestProperty("Authorization", getBasicAutentication());
             conn.setRequestProperty("Accept", "application/json");
             if (!METHOD_GET)
                 conn.setDoOutput(true);

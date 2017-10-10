@@ -44,7 +44,7 @@ public class ReportTipActivity extends AppCompatActivity {
         User u = new User(SharedPreferencesUtility.readValue(this, "userId"));
         Record r = new Record(u, null, latitude, longitude, description);
 
-        new ApiPostRecord(imageUri).execute(r);
+        new ApiPostRecord(imageUri, this).execute(r);
         Intent intent = new Intent(this, UserActivity.class);
         startActivity(intent);
     }
