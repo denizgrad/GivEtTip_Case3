@@ -42,9 +42,9 @@ public class AccountFragment extends Fragment {
         try {
             ApiGetUser getUser = new ApiGetUser();
             User user = getUser.execute(String.valueOf(userId)).get();
-            ((TextView)view.findViewById(R.id.scoreValue)).setText(user.getScore().toString());
-            ((TextView)view.findViewById(R.id.emailValue)).setText(user.getEmail());
-            ((TextView)view.findViewById(R.id.nameValue)).setText(user.getName());
+            ((TextView)view.findViewById(R.id.emailValue)).setText(user.getScore().toString());
+            ((TextView)view.findViewById(R.id.nameValue)).setText(user.getEmail());
+            ((TextView)view.findViewById(R.id.scoreValue)).setText(user.getName());
         } catch (Exception e) {
             Log.e("ERROR: ",e.getLocalizedMessage());
         }
